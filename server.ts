@@ -9,6 +9,17 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+// Validate mandatory APP_URL environment variable
+const validateAppUrl = () => {
+  const appUrl = process.env.APP_URL;
+  if (!appUrl || appUrl === "https://your-app-domain.vercel.app" || appUrl.trim() === "") {
+    throw new Error("APP_URL environment variable is mandatory and required for deployment. Please configure it in your environment variables or .env file.");
+  }
+  return appUrl;
+};
+
+const APP_URL = validateAppUrl();
+
 app.use(express.json());
 
 function isRealApiKey(key: string | undefined): boolean {
